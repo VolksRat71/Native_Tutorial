@@ -1,12 +1,36 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput
+} from 'react-native';
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState('');
+
+  const goalInputHandler = (enteredText) => {
+    setEnteredGoal(enteredText)
+  };
+
+  const addGoalHandler = () => {
+    console.log(enteredGoal);
+  }
+
   return (
-    <View style={{ padding: 50 }}>
+    <View style={styles.screen}>
       <View style={styles.container}>
-        <TextInput placeholder="Course Goal" style={{ borderBottomColor: 'black', borderBottomWidth: 1, marginBottom: 20, width: '80%' }} />
-        <Button title="ADD" />
+        <TextInput
+          placeholder="Course Goal"
+          style={styles.textInput}
+          onChangeText={goalInputHandler}
+          value={enteredGoal}
+        />
+        <Button
+          title="ADD"
+          onPress={addGoalHandler}
+        />
       </View>
       <View>
 
@@ -16,9 +40,17 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    padding: 50,
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  }
+  },
+  textInput: {
+    borderColor: 'black',
+    borderWidth: 1,
+    width: '80%'
+  },
 });

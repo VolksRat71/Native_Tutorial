@@ -8,44 +8,32 @@ import {
   ScrollView,
   FlatList
 } from 'react-native';
+import GoalItem from './components/GoalItem';
+import GoalInput from './components/GoalInput';
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState('');
+
   const [courseGoals, setCourseGoals] = useState([]);
 
-  const goalInputHandler = (enteredText) => {
-    setEnteredGoal(enteredText)
-  };
-
-  const addGoalHandler = () => {
-    setCourseGoals(currentGoals => [...currentGoals, { key: Math.random().toString(), value: enteredGoal }]);
+  const addGoalHandler = goalTitle => {
+    setCourseGoals(currentGoals => [
+      ...currentGoals,
+      { id: Math.random().toString(), value: goalTitle }]);
   }
 
   return (
     // Text Input and Button
     <View style={styles.screen}>
-      <View style={styles.container}>
-        <TextInput
-          placeholder="Course Goal"
-          style={styles.textInput}
-          onChangeText={goalInputHandler}
-          value={enteredGoal}
-        />
-        <Button
-          title="ADD"
-          style={styles.button}
-          onPress={addGoalHandler}
-        />
-      </View>
+      <GoalInput onAddGoal={addGoalHandler} />
       {/* Upon Render, empty container, onPress list */}
       <View>
         <FlatList
+          keyExtractor={(item, index) => item.id}
           data={courseGoals}
-          renderItem={itemData => (
-            <View style={styles.listItem}>
-              <Text>{itemData.item.value}</Text>
-            </View>
-          )}
+          renderItem={itemData =>
+            <GoalItem
+              title={itemData.item.value}
+            />}
         />
       </View>
     </View>
@@ -56,27 +44,4 @@ const styles = StyleSheet.create({
   screen: {
     padding: 50,
   },
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  textInput: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    width: '80%',
-    padding: 5,
-  },
-  button: {
-
-  },
-  listItem: {
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 5,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1,
-  }
 });

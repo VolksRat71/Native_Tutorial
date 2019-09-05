@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import {
+    View,
+    TextInput,
+    Button,
+    StyleSheet,
+    Modal
+} from 'react-native';
 
 const GoalInput = props => {
 
@@ -9,29 +15,38 @@ const GoalInput = props => {
         setEnteredGoal(enteredText)
     };
 
+    const addGoalHandler = () => {
+        props.onAddGoal(enteredGoal);
+        setEnteredGoal('');
+    }
+
     return (
-        <View style={styles.container}>
-            <TextInput
-                placeholder="Course Goal"
-                style={styles.textInput}
-                onChangeText={goalInputHandler}
-                value={enteredGoal}
-            />
-            <Button
-                title="ADD"
-                style={styles.button}
-                onPress={props.onAddGoal.bind(this, enteredGoal)}
-            />
-        </View>
+        <Modal visible={props.visible} animationType="slide" >
+            <View style={styles.container}>
+                <TextInput
+                    placeholder="Course Goal"
+                    style={styles.textInput}
+                    onChangeText={goalInputHandler}
+                    value={enteredGoal}
+                />
+                <Button
+                    color="red"
+                    title="CANCEL"
+                />
+                <Button
+                    title="ADD"
+                    onPress={addGoalHandler}
+                />
+            </View>
+        </Modal>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 5,
     },
     textInput: {
         borderColor: 'black',
@@ -39,9 +54,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         width: '80%',
         padding: 5,
-    },
-    button: {
-
+        marginBottom: 5,
     },
 });
 

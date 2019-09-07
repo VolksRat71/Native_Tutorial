@@ -1,22 +1,65 @@
-import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Button,
+    TouchableWithoutFeedback,
+    Keyboard,
+    Image
+} from 'react-native';
 import Card from '../components/Card';
 import Colors from '../constants/colors'
 import Input from '../components/Input'
 
 const StartGameScreen = props => {
+
+    const [enteredValue, setEnteredValue] = useState('');
+    const numberInputHandler = inputText => {
+        setEnteredValue(inputText.replace(/[^0-9]/g, ''));
+    };
+    const resetInputHandler = () => {
+        setEnteredValue('');
+    };
+
     return (
-        <View style={styles.screen}>
-            <Text style={styles.title}>The Game Screen!</Text>
-            <Card style={styles.inputContainer}>
-                <Text>Select a Number</Text>
-                <Input style={styles.textInputWidth} />
-                <View style={styles.buttonFlex}>
-                    <View style={styles.inputButtons}><Button color={Colors.primary} title="Reset" /></View>
-                    <View style={styles.inputButtons}><Button color={Colors.accent} title="Confirm" /></View>
-                </View>
-            </Card>
-        </View>
+        <TouchableWithoutFeedback onPress={() => {
+            Keyboard.dismiss();
+        }}>
+            <View style={styles.screen}>
+                <Card style={styles.inputContainer}>
+                    <Text>Select a Number</Text>
+                    <Input
+                        style={styles.textInputWidth}
+                        blurOnSubmit
+                        autoCapitalize='none'
+                        keyboardType='number-pad'
+                        maxLength={2}
+                        onChangeText={numberInputHandler}
+                        value={enteredValue}
+                    />
+                    <View style={styles.buttonFlex}>
+                        <View style={styles.inputButtons}>
+                            <Button
+                                color={Colors.accent}
+                                title="Reset"
+                                onPress={resetInputHandler}
+                            />
+                        </View>
+                        <View style={styles.inputButtons}>
+                            <Button
+                                color={Colors.primary}
+                                title="Confirm"
+                            />
+                        </View>
+                    </View>
+                </Card>
+                <Image
+                    style={styles.imageStyle}
+                    source={require('../assets/images/computer_guess_emoji.gif')}
+                />
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -36,6 +79,7 @@ const styles = StyleSheet.create({
         width: 300,
         maxWidth: '80%',
         alignItems: 'center',
+        marginVertical: 35,
     },
     title: {
         fontSize: 20,
@@ -54,6 +98,13 @@ const styles = StyleSheet.create({
     },
     textInputWidth: {
         width: 50,
+        textAlign: 'center',
+    },
+    imageStyle: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        width: '100%',
+        height: '65%',
     }
 });
 

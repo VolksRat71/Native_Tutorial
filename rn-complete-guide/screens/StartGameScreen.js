@@ -15,11 +15,29 @@ import Input from '../components/Input'
 const StartGameScreen = props => {
 
     const [enteredValue, setEnteredValue] = useState('');
+    const [confirmed, setConfirmed] = useState(false);
+    const [selectedNumber, setSelectedNumber] = useState('');
+
     const numberInputHandler = inputText => {
         setEnteredValue(inputText.replace(/[^0-9]/g, ''));
     };
     const resetInputHandler = () => {
         setEnteredValue('');
+    };
+    const confirmInputHandler = () => {
+        const chosenNumber = parseInt(enteredValue);
+        if (chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99) {
+            return;
+        };
+        setConfirmed(true);
+        setSelectedNumber();
+        setEnteredValue('');
+    };
+
+    let confirmedOutput;
+
+    if (confirmed) {
+        confirmedOutput = <Text>Number Selected: {selectedNumber}</Text>
     };
 
     return (
@@ -50,14 +68,16 @@ const StartGameScreen = props => {
                             <Button
                                 color={Colors.primary}
                                 title="Confirm"
+                                onPress={confirmInputHandler}
                             />
                         </View>
                     </View>
                 </Card>
-                <Image
+                {confirmedOutput}
+                {/* <Image
                     style={styles.imageStyle}
                     source={require('../assets/images/computer_guess_emoji.gif')}
-                />
+                /> */}
             </View>
         </TouchableWithoutFeedback>
     );
